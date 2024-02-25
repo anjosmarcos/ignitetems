@@ -2,8 +2,14 @@ import { Header } from 'src/Components/Header';
 import { Container } from './styles';
 import { Hightlight } from 'src/Components/Highlight';
 import { GroupCard } from 'src/Components/GrupoCard';
+import { useState } from 'react';
+import { FlatList } from 'react-native';
+import { ListEmpty } from 'src/Components/ListEmpty';
+import { Button } from 'src/Components/Button';
 
 export default function Groups() {
+  const [groups, setGroups] = useState<string[]>([])
+
   return (
     <Container>
       <Header showBackButton/>
@@ -12,12 +18,24 @@ export default function Groups() {
         subtitle="Escolha uma turma para participar"
       />
 
-      <GroupCard
-        title="Turma A"
+      <FlatList 
+        data={groups}
+        keyExtractor={item => item}
+        renderItem={({item}) => (
+          <GroupCard 
+            title={item} 
+          />
+        )}
+        contentContainerStyle={groups.length === 0 && {flex:1}}
+        ListEmptyComponent={() => (
+          <ListEmpty 
+          message="Nenhuma turma cadastrada"
+          />  
+        )}
       />
-      
-      <GroupCard
-        title="Turma B"
+
+      <Button 
+        title='Criar turma'
       />
 
     </Container>
