@@ -6,6 +6,7 @@ import { ActivityIndicator } from 'react-native'
 
 import theme from './src/theme'
 import { Loading } from "./src/Components/Loading";
+import { NewGroup } from "src/Components/NewGroup";
 
 export default function App() {
   const [fontsLoaded] =  useFonts({
@@ -20,7 +21,7 @@ export default function App() {
         backgroundColor="transparent"
         translucent
        />
-        {fontsLoaded ? <Groups /> : <Loading /> }
+        {fontsLoaded ? <NewGroup /> : <Loading /> }
     </ThemeProvider>
   );
 }
