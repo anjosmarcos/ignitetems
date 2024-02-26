@@ -6,13 +6,18 @@ import { Input } from "src/Components/Input";
 import { Filter } from "src/Components/Filter";
 import { FlatList } from "react-native";
 import { useState } from "react";
+import { PlayerCard } from "src/Components/PlayerCard";
+import { ListEmpty } from "src/Components/ListEmpty";
+import { Button } from "src/Components/Button";
 
 export function Players() {
-    const [team, setTeam] = useState('Time A')
-    const [players, setPlayers] = useState(['a', 'b'])
+    const [team, setTeam] = useState('Time A');
+    const [players, setPlayers] = useState<string[]>(['Marcos', 'Larissa']);
 
     return (
         <Container>
+            {/* Your code here */}
+
             <Header showBackButton />
 
             <Hightlight
@@ -26,7 +31,9 @@ export function Players() {
                     autoCorrect={false}
                 />
 
-                <ButtonIcon />
+                <ButtonIcon
+                    icon="add"
+                />
 
             </Form>
 
@@ -45,10 +52,41 @@ export function Players() {
 
                 />
                 <NumberOfPlayers>
-                   {players.length}
+                    {players.length}
                 </NumberOfPlayers>
 
             </HeaderList>
+
+            <FlatList
+                data={players}
+                keyExtractor={(item) => item}
+                renderItem={({ item }: { item: string }) => (
+                    <PlayerCard
+                        name={item}
+                        onRemove={() => { }}
+                    />
+                )}
+                ListEmptyComponent={() => (
+                    <ListEmpty
+                        message="Nenhum jogador adicionado"
+                    />
+                )}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={[
+                    {
+                        paddingBottom: 100
+                    },
+                    players.length === 0 && {
+                        flex: 1
+                    }
+                ]}
+            />
+
+            <Button
+                title="Remover Turma"
+                type="SECONDARY"
+            />
+
         </Container>
-    )
+    );
 }
