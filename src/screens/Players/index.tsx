@@ -12,7 +12,7 @@ import { Button } from "src/Components/Button";
 
 export function Players() {
     const [team, setTeam] = useState('Time A');
-    const [players, setPlayers] = useState<string[]>(['Marcos', 'Larissa']);
+    const [players, setPlayers] = useState(['Marcos']);
 
     return (
         <Container>
@@ -60,7 +60,7 @@ export function Players() {
             <FlatList
                 data={players}
                 keyExtractor={(item) => item}
-                renderItem={({ item }: { item: string }) => (
+                renderItem={({ item }) => (
                     <PlayerCard
                         name={item}
                         onRemove={() => { }}
