@@ -1,18 +1,28 @@
+import { useState } from "react";
+import { FlatList } from "react-native";
+import { useRoute } from "@react-navigation/native";
+
 import { Header } from "src/Components/Header";
-import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
 import { Hightlight } from "src/Components/Highlight";
 import { ButtonIcon } from "src/Components/ButtonIcon";
 import { Input } from "src/Components/Input";
 import { Filter } from "src/Components/Filter";
-import { FlatList } from "react-native";
-import { useState } from "react";
 import { PlayerCard } from "src/Components/PlayerCard";
 import { ListEmpty } from "src/Components/ListEmpty";
 import { Button } from "src/Components/Button";
 
+import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
+
+type RouteParams = {
+    group: string
+}
+
 export function Players() {
     const [team, setTeam] = useState('Time A');
-    const [players, setPlayers] = useState(['Marcos', 'Larissa']);
+    const [players, setPlayers] = useState([]);
+    const route = useRoute()
+    const { group } = route.params as RouteParams
+
 
     return (
         <Container>
@@ -21,7 +31,7 @@ export function Players() {
             <Header showBackButton />
 
             <Hightlight
-                title="Nome da Turma"
+                title={group}
                 subtitle="Adicione jogadores para criar turmas e partidas"
             />
 
