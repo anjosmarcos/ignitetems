@@ -6,7 +6,7 @@ import { ActivityIndicator } from 'react-native'
 
 import theme from './src/theme'
 import { Loading } from "./src/Components/Loading";
-import { NewGroup } from "src/Components/NewGroup";
+import { NewGroup } from "@screens/NewGroup";
 import { Players } from "@screens/Players";
 
 export default function App() {

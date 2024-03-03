@@ -1,7 +1,7 @@
-import { Button } from "../Button";
-import { Header } from "../Header";
-import { Hightlight } from "../Highlight";
-import { Input } from "../Input";
+import { Button } from "../../Components/Button";
+import { Header } from "../../Components/Header";
+import { Hightlight } from "../../Components/Highlight";
+import { Input } from "../../Components/Input";
 import { Container, Content, Icon } from "./styles";
 
 export function NewGroup() {
