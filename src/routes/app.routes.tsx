@@ -8,7 +8,11 @@ const { Screen, Navigator } = createNativeStackNavigator();
 
 export function AppRoutes() {
     return(
-        <Navigator>
+        <Navigator
+            screenOptions={{
+                headerShown: false // headerShown: false removes the header from the screen
+            }}
+        >
             <Screen 
                 name="groups"
                 component={Groups}
