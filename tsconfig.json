@@ -10,9 +10,6 @@
       "@componets/*": [
         "./src/componets/*"
       ],
-      "@routes/*": [
-        "./src/routes/*"
-      ],
       "@screens/*": [
         "./src/screens/*"
       ],
