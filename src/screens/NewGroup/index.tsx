@@ -1,10 +1,19 @@
+import { useNavigation } from "@react-navigation/native";
+
 import { Button } from "../../Components/Button";
 import { Header } from "../../Components/Header";
 import { Hightlight } from "../../Components/Highlight";
 import { Input } from "../../Components/Input";
+
 import { Container, Content, Icon } from "./styles";
 
 export function NewGroup() {
+    const navegation = useNavigation()
+
+    function handleNew() {
+        navegation.navigate('players', {group: 'gropo players Rocket'})
+    }
+
     return (
         <Container>
             <Header showBackButton />
@@ -20,6 +29,7 @@ export function NewGroup() {
                 <Button
                     title="Criar turma"
                     style={{ marginTop: 20 }}
+                    onPress={handleNew}
                 />
             </Content>
         </Container>
