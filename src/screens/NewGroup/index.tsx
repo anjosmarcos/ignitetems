@@ -7,13 +7,19 @@ import { Hightlight } from "../../Components/Highlight";
 import { Input } from "../../Components/Input";
 
 import { Container, Content, Icon } from "./styles";
+import { groupCreate } from "@storage/group/groupCreate";
 
 export function NewGroup() {
     const [group, setGroup] = useState('')
-    const navegation = useNavigation()
+    const navigation = useNavigation()
 
-    function handleNew() {
-        navegation.navigate('players', {group: group})
+    async function handleNew() {
+        try {
+            await groupCreate(group);
+            navigation.navigate('players', { group });
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (

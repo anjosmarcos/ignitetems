@@ -1,6 +1,6 @@
 import { FlatList } from 'react-native';
-import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native'
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 
 import { Header } from 'src/Components/Header';
 import { Hightlight } from 'src/Components/Highlight';
@@ -9,6 +9,7 @@ import { ListEmpty } from 'src/Components/ListEmpty';
 import { Button } from 'src/Components/Button';
 
 import { Container } from './styles';
+import { groupsGetAll } from '@storage/group/groupGetAll';
 
 export function Groups() {
   const [groups, setGroups] = useState<string[]>([])
@@ -18,6 +19,20 @@ export function Groups() {
   function handleNewGroup() {
     navigation.navigate('new')
   }
+
+  async function fetchGroups() {
+    try {
+      const data = await groupsGetAll();
+      setGroups(data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useFocusEffect(useCallback(() => {
+    fetchGroups()
+  },[]))
+
 
   return (
     <Container>
