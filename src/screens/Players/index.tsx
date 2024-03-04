@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FlatList } from "react-native";
+import { Alert, FlatList } from "react-native";
 import { NavigationContainer, useRoute } from "@react-navigation/native";
 
 
@@ -13,17 +13,45 @@ import { ListEmpty } from "src/Components/ListEmpty";
 import { Button } from "src/Components/Button";
 
 import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
+import { playerCreate } from "@storage/players/playerAddByGroup";
+import { playerGetByGroup } from "@storage/players/playersGetByGroup";
 
 type RouteParams = {
     group: string
 }
 
 export function Players() {
+    const [newPlayerName, setNewPlayerName] = useState('')
     const [team, setTeam] = useState('Time A');
     const [players, setPlayers] = useState([]);
     const route = useRoute()
     const { group } = route.params as RouteParams
 
+    async function handleAddPlayers() {
+        if (newPlayerName.trim().length === 0) {
+            return Alert.alert('Nova Pessoa', 'Informe o nome da pessoa para adicionar.')
+        }
+
+        const newPlayer = {
+            name: newPlayerName,
+            team,
+        }
+
+        try {
+            await playerCreate(newPlayer, group)
+            const players = await playerGetByGroup(group)
+            console.log(players)
+            
+        } catch (error) {
+            if (error instanceof Error) {
+                Alert.alert('Nova Pessoa', error.message)
+            } else {
+                Alert.alert('Não foi possível adicionar uma nova pessoa')
+                console.log(error)
+
+            }
+        }
+    }
 
     return (
         <Container>
@@ -38,12 +66,14 @@ export function Players() {
 
             <Form>
                 <Input
+                    onChangeText={setNewPlayerName}
                     placeholder="Nome da turma"
                     autoCorrect={false}
                 />
 
                 <ButtonIcon
                     icon="add"
+                    onPress={handleAddPlayers}
                 />
 
             </Form>
