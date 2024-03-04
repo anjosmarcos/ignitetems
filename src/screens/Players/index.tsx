@@ -20,12 +20,14 @@ import { playerGetByGroupAndTeam } from "@storage/players/playerGetByGroupAndTea
 import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
 import { playerRemoveByGroup } from "@storage/players/playerRemoveByGroup";
 import { groupRemoveByName } from "@storage/group/groupRemoveByName";
+import { Loading } from "src/Components/Loading";
 
 type RouteParams = {
     group: string
 }
 
 export function Players() {
+    const [isLoading, setIsLoading] = useState(true)
     const [newPlayerName, setNewPlayerName] = useState('')
     const [team, setTeam] = useState('Time A');
     const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
@@ -47,7 +49,7 @@ export function Players() {
 
         try {
             await playerCreate(newPlayer, group)
-            fetchPlayerByTeam() 
+            fetchPlayerByTeam()
             // const players = await playerGetByGroup(group)
 
         } catch (error) {
@@ -62,17 +64,21 @@ export function Players() {
     }
 
     async function fetchPlayerByTeam() {
-        try{
+        try {
+            setIsLoading(true)
             const playersByTeam = await playerGetByGroupAndTeam(group, team)
-            
+
             newPlayerNameInputRef.current?.blur()
             Keyboard.dismiss()
 
             setNewPlayerName('')
             setPlayers(playersByTeam)
-        }catch(error) {
+            
+        } catch (error) {
             console.log(error)
             Alert.alert('Não foi possível carregar os jogadores filtradas por time')
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -81,19 +87,19 @@ export function Players() {
             await playerRemoveByGroup(playerName, group)
             fetchPlayerByTeam()
 
-        }catch (error) {
+        } catch (error) {
             console.log(error)
             Alert.alert('Remover pessoa', 'Não foi possível remover essa pessoa')
         }
     }
 
     async function groupRemove() {
-        try{
+        try {
             await groupRemoveByName(group)
             navigation.navigate('groups')
 
 
-        }catch (error) {
+        } catch (error) {
             console.log(error)
             Alert.alert('Remover Grupo', 'Não foi possível remover esse grupo')
         }
@@ -110,7 +116,7 @@ export function Players() {
                 },
                 {
                     text: 'Sim',
-                    onPress: () => {groupRemove()}
+                    onPress: () => { groupRemove() }
                 }
             ]
         )
@@ -150,19 +156,23 @@ export function Players() {
             </Form>
 
             <HeaderList>
-                <FlatList
-                    data={['Time A', 'Time B']}
-                    keyExtractor={(item) => item}
-                    renderItem={({ item }) => (
-                        <Filter
-                            title={item}
-                            isActive={item === team}
-                            onPress={() => setTeam(item)}
-                        />
-                    )}
-                    horizontal
+                {
+                    isLoading ? <Loading /> :
 
-                />
+                        <FlatList
+                            data={['Time A', 'Time B']}
+                            keyExtractor={(item) => item}
+                            renderItem={({ item }) => (
+                                <Filter
+                                    title={item}
+                                    isActive={item === team}
+                                    onPress={() => setTeam(item)}
+                                />
+                            )}
+                            horizontal
+
+                        />
+                }
                 <NumberOfPlayers>
                     {players.length}
                 </NumberOfPlayers>
@@ -175,7 +185,7 @@ export function Players() {
                 renderItem={({ item }) => (
                     <PlayerCard
                         name={item.name}
-                        onRemove={() => { handleRemovePlayer(item.name)}}
+                        onRemove={() => { handleRemovePlayer(item.name) }}
                     />
                 )}
                 ListEmptyComponent={() => (
