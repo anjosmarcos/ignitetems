@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FlatList } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { NavigationContainer, useRoute } from "@react-navigation/native";
+
 
 import { Header } from "src/Components/Header";
 import { Hightlight } from "src/Components/Highlight";

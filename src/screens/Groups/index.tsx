@@ -1,6 +1,7 @@
 import { FlatList } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+
 
 import { Header } from 'src/Components/Header';
 import { Hightlight } from 'src/Components/Highlight';
@@ -14,7 +15,7 @@ import { groupsGetAll } from '@storage/group/groupGetAll';
 export function Groups() {
   const [groups, setGroups] = useState<string[]>([])
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   function handleNewGroup() {
     navigation.navigate('new')
