@@ -12,9 +12,12 @@ import { PlayerCard } from "src/Components/PlayerCard";
 import { ListEmpty } from "src/Components/ListEmpty";
 import { Button } from "src/Components/Button";
 
-import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
 import { playerCreate } from "@storage/players/playerAddByGroup";
 import { playerGetByGroup } from "@storage/players/playersGetByGroup";
+import { PlayerStorageDTO } from "@storage/players/PlayerStorageDTO";
+import { playerGetByGroupAndTeam } from "@storage/players/playerGetByGroupAndTeam";
+
+import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
 
 type RouteParams = {
     group: string
@@ -23,7 +26,7 @@ type RouteParams = {
 export function Players() {
     const [newPlayerName, setNewPlayerName] = useState('')
     const [team, setTeam] = useState('Time A');
-    const [players, setPlayers] = useState([]);
+    const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
     const route = useRoute()
     const { group } = route.params as RouteParams
 
@@ -39,9 +42,8 @@ export function Players() {
 
         try {
             await playerCreate(newPlayer, group)
-            const players = await playerGetByGroup(group)
-            console.log(players)
-            
+            // const players = await playerGetByGroup(group)
+
         } catch (error) {
             if (error instanceof Error) {
                 Alert.alert('Nova Pessoa', error.message)
@@ -50,6 +52,16 @@ export function Players() {
                 console.log(error)
 
             }
+        }
+    }
+
+    async function fetchPlayerByTeam() {
+        try{
+            const playersByTeam = await playerGetByGroupAndTeam(group, team)
+            setPlayers(playersByTeam)
+        }catch(error) {
+            console.log(error)
+            Alert.alert('Não foi possível carregar os jogadores filtradas por time')
         }
     }
 
