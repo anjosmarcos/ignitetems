@@ -18,6 +18,7 @@ import { PlayerStorageDTO } from "@storage/players/PlayerStorageDTO";
 import { playerGetByGroupAndTeam } from "@storage/players/playerGetByGroupAndTeam";
 
 import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
+import { playerRemoveByGroup } from "@storage/players/playerRemoveByGroup";
 
 type RouteParams = {
     group: string
@@ -70,6 +71,17 @@ export function Players() {
         }catch(error) {
             console.log(error)
             Alert.alert('Não foi possível carregar os jogadores filtradas por time')
+        }
+    }
+
+    async function handleRemovePlayer(playerName: string) {
+        try {
+            await playerRemoveByGroup(playerName, group)
+            fetchPlayerByTeam()
+
+        }catch (error) {
+            console.log(error)
+            Alert.alert('Remover pessoa', 'Não foi possível remover essa pessoa')
         }
     }
 
@@ -132,7 +144,7 @@ export function Players() {
                 renderItem={({ item }) => (
                     <PlayerCard
                         name={item.name}
-                        onRemove={() => { }}
+                        onRemove={() => { handleRemovePlayer(item.name)}}
                     />
                 )}
                 ListEmptyComponent={() => (
@@ -152,6 +164,7 @@ export function Players() {
             />
 
             <Button
+
                 title="Remover Turma"
                 type="SECONDARY"
             />
