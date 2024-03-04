@@ -10,6 +10,7 @@ export async function groupsGetAll() {
 
     return groups;
   } catch (error) {
+    console.log(error);
     throw error;
   }
 }
